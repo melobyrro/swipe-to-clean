@@ -1,0 +1,62 @@
+{
+  "name": "swipe-to-clean",
+  "version": "0.1.0",
+  "description": "Self-hosted Immich cleanup companion for same-day-across-years review.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "audit:publish": "node scripts/publish-audit.mjs",
+    "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:client": "vite",
+    "dev:server": "tsx watch src/server/index.ts",
+    "dev:e2e": "concurrently -k \"npm:dev:server\" \"vite --host 127.0.0.1 --port 4173\"",
+    "build": "vite build && tsup src/server/index.ts --format esm --target node20 --outDir dist/server --sourcemap",
+    "start": "node dist/server/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.1.1",
+    "@fontsource/space-grotesk": "^5.1.1",
+    "better-sqlite3": "^11.8.1",
+    "compression": "^1.7.5",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "ioredis": "^5.4.2",
+    "jose": "^5.9.6",
+    "luxon": "^3.5.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/compression": "^1.7.5",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/express": "^5.0.1",
+    "@types/luxon": "^3.4.2",
+    "@types/node": "^22.13.8",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/supertest": "^6.0.3",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "concurrently": "^9.1.2",
+    "jsdom": "^26.0.0",
+    "supertest": "^7.1.0",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vitest": "^3.0.8"
+  }
+}

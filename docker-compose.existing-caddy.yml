@@ -1,0 +1,12 @@
+services:
+  app:
+    networks:
+      default:
+      caddy_proxy:
+        aliases:
+          - swipe-to-clean-app
+
+networks:
+  caddy_proxy:
+    external: true
+    name: ${CADDY_DOCKER_NETWORK:-caddy_proxy}

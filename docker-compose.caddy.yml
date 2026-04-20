@@ -1,0 +1,21 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      APP_HOST: ${APP_HOST}
+      ACME_EMAIL: ${ACME_EMAIL}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile.docker:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

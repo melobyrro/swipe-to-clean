@@ -1,42 +1,70 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
+    if: github.event_name == 'workflow_dispatch' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Select application checks
+        id: scope
+        env:
+          CI_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python3 .github/scripts/ci_scope.py
+
+      - name: Validate CI selection contracts
+        run: python3 -m unittest discover -s .github/scripts -p 'test_ci_scope.py'
+
+      # This scans public source, including documentation, without dependencies.
+      - name: Publish audit
+        run: node scripts/publish-audit.mjs
 
       - name: Setup Node
+        if: steps.scope.outputs.full == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
       - name: Install dependencies
+        if: steps.scope.outputs.full == 'true'
         run: npm ci
 
-      - name: Publish audit
-        run: npm run audit:publish
-
       - name: Typecheck
+        if: steps.scope.outputs.full == 'true'
         run: npm run typecheck
 
       - name: Unit and integration tests
+        if: steps.scope.outputs.full == 'true'
         run: npm test
 
       - name: Install Playwright browser
+        if: steps.scope.outputs.full == 'true'
         run: npx playwright install --with-deps chromium
 
       - name: End-to-end tests
+        if: steps.scope.outputs.full == 'true'
         run: npm run test:e2e
 
       - name: Production build
+        if: steps.scope.outputs.full == 'true'
         run: npm run build

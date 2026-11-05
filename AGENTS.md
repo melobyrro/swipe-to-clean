@@ -23,8 +23,10 @@ closeout with verified decisions, evidence, ownership and remaining work.
 
 ## Efficient CI
 
-Keep task pull requests draft while iterating and batch related fixes. After
-focused checks and review, mark the candidate ready to run full CI; updates to a
+Keep task pull requests draft while iterating. Batch related fixes, tests and
+known documentation/handoff updates in the original task PR before final review.
+After focused checks and review, record the candidate commit and validation in
+the PR and mark it ready to run full CI; updates to a
 ready candidate rerun it and cancel obsolete tests. Return to draft before major
 further iteration. Plain root/docs prose gets lightweight checks plus the public
 source audit. Code, tests, runtime Markdown and executable docs retain the full

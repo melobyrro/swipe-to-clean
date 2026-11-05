@@ -1,19 +1,12 @@
 # Swipe to Clean handoff
 
-## CI efficiency — October 24, 2026
+## CI efficiency
 
-Andre authorized global Actions optimization. Keep PRs draft during iteration;
-mark reviewed candidates ready to run all existing application checks. Returning
-to draft or publishing a newer candidate cancels obsolete tests. Plain root/docs
-prose uses the scope tests and the existing public-source audit, without dependency
-or browser installation. Full checks run on ready code candidates and manual
-requests, without a duplicate main-push run. Production/Immich behavior is unchanged.
-
-Validated locally: 12 CI-scope tests, the publish audit, typecheck, 10 existing
-unit/integration assertions, production build and actionlint 1.7.12. Browser E2E
-was not repeated for these workflow-only changes; its existing CI command remains.
-Independent source review found no blocking issues. Hosted CI and the exact merged
-workflow readback are tracked in the delivery PR; no app deployment is included.
+The workflow savings are merged in [PR #9](https://github.com/melobyrro/swipe-to-clean/pull/9).
+Follow [AGENTS](AGENTS.md#efficient-ci): iterate in draft, batch source/tests and
+known delivery context before final review, then mark the reviewed candidate ready.
+Actions retains its documentation/public-audit path and full code-candidate checks.
+No production deployment or Immich mutation is part of this process change.
 
 ## Previous startup context
 

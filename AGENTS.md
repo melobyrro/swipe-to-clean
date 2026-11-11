@@ -1,36 +1,19 @@
 # Swipe to Clean agent instructions
 
-## Session startup
+Verify this repository and actual task checkout; read README and relevant product guidance. Historical handoffs are context, not authority to resume work.
 
-This is Swipe to Clean, the self-hosted Immich photo/video review companion.
-Verify this repository's remote and work from its actual task checkout root.
-Read this file, [README](README.md), and the current [handoff](HANDOFF.md) before
-working. A shared cloud environment named Dev does not make this a Dev app.
-Reconcile handoff context with current source and the user's latest request;
-recorded next steps are not automatic authorization to execute them.
+## Development and delivery
 
-## Product boundaries
+Use one chat: change → resolve merge conflicts against current main → build and stage → check affected behavior → Andre approves production → promote the same tested artifact and verify.
 
-Keep the existing same-month/day review scope and durable Keep/Trash semantics.
-Trash uses Immich soft delete (`force: false`); never turn it into permanent
-asset deletion. Keep Immich credentials server-side and out of source, logs,
-screenshots and handoffs. Preserve SQLite state and existing authentication.
+The same chat uses the existing authenticated host tools when host-specific work is needed; no separate release-manager chat, owner designation, handoff acceptance, mandatory independent reviewer, draft/ready ceremony or repeated unchanged review is required. Preserve unrelated work and never force-push over it.
 
-Use focused checks appropriate to the change. Documentation-only changes need
-link and diff checks, not deployment. Do not start an Immich mutation or deploy
-production merely to validate documentation. Update the existing handoff at
-closeout with verified decisions, evidence, ownership and remaining work.
+GitHub stores source and pull requests; automated test/review gates are removed. Run only checks needed to build, then verify changed behavior in an isolated staging/preview environment. Use focused tests when they prove calculations, persistence or concurrency that preview checks cannot establish. Broad suites are optional unless explicitly requested or a concrete unresolved defect warrants them. Reuse unchanged evidence.
 
-## Efficient CI
+Production requires one approval for the tested artifact and target; retries within that scope need no repeat approval. No mandatory pre-deployment backup, snapshot or restore rehearsal. Preserve independent disaster-recovery jobs and existing backups. Never claim source rollback restores data.
 
-Keep task pull requests draft while iterating. Batch related fixes, tests and
-known documentation/handoff updates in the original task PR before final review.
-After focused checks and review, record the candidate commit and validation in
-the PR and mark it ready to run full CI; updates to a
-ready candidate rerun it and cancel obsolete tests. Return to draft before major
-further iteration. Plain root/docs prose gets lightweight checks plus the public
-source audit. Code, tests, runtime Markdown and executable docs retain the full
-typecheck/unit/browser/build pipeline. The full suite runs on ready PRs and manual
-requests, without a duplicate main-push run. Never call a docs-only or skipped
-check a full-suite pass. Do not duplicate a full local run solely to mirror CI.
-No workflow deploys the application or calls the real Immich instance.
+Keep a short result with artifact, target, affected checks and outcome. Save resumption notes only when pausing or requested. Do not recreate retired gates, backup mandates or ownership roles without Andre's explicit request. Documentation-only changes do not deploy.
+
+## Product and security boundaries
+
+Preserve same-month/day scope, durable Keep/Trash decisions, SQLite state and authentication. Trash uses Immich soft delete (`force: false`), never permanent asset deletion. Credentials remain server-side and out of Git, logs and screenshots. Preview uses isolated synthetic state and must not mutate real Immich assets. Inspect public-source changes for credentials and private runtime files before publication; `npm run audit:publish` is available as a focused tool, not an automatic CI gate.

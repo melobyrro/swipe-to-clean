@@ -151,7 +151,7 @@ For Cloudflare:
 
 This repo includes:
 
-- CI via GitHub Actions
+- source and pull requests on GitHub; affected behavior is verified in isolated staging
 - `npm run audit:publish` to catch local runtime files, private keys, and leaked workstation paths before upload
 - Dependabot config for npm and Docker updates
 - contribution and security policy docs
